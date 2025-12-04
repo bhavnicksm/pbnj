@@ -2,8 +2,17 @@
 
 ## One-Click Deploy (Recommended)
 
-Click the "Deploy to Cloudflare" button on the GitHub repo.
-This automatically provisions everything you need.
+Click the "Deploy to Cloudflare" button on the GitHub repo — that's it!
+
+The deploy button automatically:
+- Forks the repo to your GitHub account
+- Creates a Cloudflare Pages project
+- Provisions a D1 database
+- Runs the database migrations
+- Sets up your AUTH_KEY secret
+- Deploys the application
+
+Your pastebin will be live in under 60 seconds. No configuration needed.
 
 ## Manual Deployment
 
