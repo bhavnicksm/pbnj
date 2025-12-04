@@ -12,4 +12,7 @@ export default defineConfig({
     },
   }),
   integrations: [tailwind()],
+  security: {
+    checkOrigin: false,
+  },
 });
