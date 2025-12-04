@@ -11,6 +11,7 @@ export default {
   idStyle: 'sandwich',
   homepage: true,
   maxPasteSize: '1mb',
+  theme: 'flexoki-light',
 }
 ```
 
@@ -57,6 +58,54 @@ Examples:
 - `'2mb'` - 2 megabytes
 - `'1gb'` - 1 gigabyte (not recommended)
 
+### `theme`
+- **Type:** `string`
+- **Default:** `'flexoki-light'`
+
+Theme preset that controls syntax highlighting and UI colors. All themes use locally-hosted CSS for consistent styling.
+
+**Light themes:**
+| Theme | Description |
+|-------|-------------|
+| `flexoki-light` | Warm, paper-like aesthetic (default) |
+| `github-light` | Classic GitHub light theme |
+| `gruvbox-light` | Retro, warm colors |
+| `catppuccin-latte` | Pastel light theme |
+
+**Dark themes:**
+| Theme | Description |
+|-------|-------------|
+| `flexoki-dark` | Warm dark variant |
+| `github-dark` | Classic GitHub dark theme |
+| `nord` | Arctic, bluish dark theme |
+| `gruvbox-dark` | Retro dark with warm accents |
+| `dracula` | Popular purple-accented dark theme |
+| `catppuccin-frappe` | Catppuccin mid-dark variant |
+| `catppuccin-macchiato` | Catppuccin darker variant |
+| `catppuccin-mocha` | Catppuccin darkest variant |
+
+### `footer`
+- **Type:** `{ text: string, link?: string }` or `undefined`
+- **Default:** `{ text: 'spread the code 🥪', link: 'https://github.com/bhavnicksm/pbnj' }`
+
+Optional footer displayed at the bottom of every page. Set to `undefined` or omit to hide the footer.
+
+- `text` - The text to display in the footer
+- `link` - Optional URL. If provided, the footer text becomes a clickable link
+
+Example:
+```js
+footer: {
+  text: 'Powered by pbnj',
+  link: 'https://github.com/bhavnicksm/pbnj',
+}
+```
+
+To disable the footer entirely:
+```js
+footer: undefined,
+```
+
 ## Example: Custom Configuration
 
 ```js
@@ -66,6 +115,7 @@ export default {
   idStyle: 'short',
   homepage: false,
   maxPasteSize: '2mb',
+  theme: 'dracula',
 }
 ```
 
@@ -74,3 +124,4 @@ This creates a pastebin with:
 - Short 8-character IDs
 - No public paste listing on homepage
 - 2MB paste limit
+- Dracula dark theme

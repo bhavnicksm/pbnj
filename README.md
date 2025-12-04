@@ -21,6 +21,7 @@ _pbnj is a simple, minimal self-hosted pastebin solution, focused on getting you
 ## ✨ Features
 
 - 🎨 **Syntax highlighting** for 100+ languages
+- 🎭 **12 beautiful themes** — Flexoki, GitHub, Nord, Gruvbox, Dracula, Catppuccin & more
 - 🧹 **Clean interface** — distraction-free, minimal design
 - 🥪 **Memorable URLs** — `crunchy-peanut-butter-sandwich` instead of `x7f9a2`
 - 📋 **Copy & download** — one-click actions for code
@@ -31,8 +32,9 @@ _pbnj is a simple, minimal self-hosted pastebin solution, focused on getting you
 - 📝 **Single-file config** — one `pbnj.config.js` to customize everything
 - 🆔 **Flexible IDs** — choose between sandwich, short, or UUID styles
 - 📦 **File uploads** — drag & drop or pipe from terminal
-- 🌐 **Raw view** — `/r/{id}` for plain text access
+- 🌐 **Raw view** — `/r/{id}` for plain text access _for AI_
 - ☁️ **Edge-powered** — runs on Cloudflare's global network
+- 🏎️ **Fast** — loads in under 200ms worldwide with Cloudflare!
 - 💸 **Free forever** — Cloudflare's free tier is more than enough
 
 ## 🙋🏻‍♀️ Why?
@@ -46,6 +48,7 @@ So I built this.
 **Why not Gist?** Maybe you want to own your data. Maybe you don't want to depend on GitHub. Maybe you just like self-hosting things. Or maybe you're a little autistic like me and enjoy having your own stuff :)
 
 **What makes pbnj different:**
+- Actually beautiful — most feature-heavy pastebins look ugly
 - Deploy in seconds with one click
 - CLI-first workflow (`pbnj file.py` → done)
 - No accounts, no git, no bloat

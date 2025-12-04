@@ -88,6 +88,39 @@ Returns recent public pastes.
 }
 ```
 
+### Update Paste
+
+PUT /api/{id}
+
+Requires authentication.
+
+```bash
+curl -X PUT https://your-pbnj.workers.dev/api/crunchy-peanut-butter-sandwich \
+  -H "Authorization: Bearer YOUR_AUTH_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "code": "console.log(\"updated\")",
+    "language": "javascript",
+    "filename": "hello.js"
+  }'
+```
+
+#### Request Body (JSON)
+
+| Field    | Type   | Required | Description                      |
+|----------|--------|----------|----------------------------------|
+| code     | string | Yes      | The new content                  |
+| language | string | No       | Language for syntax highlighting |
+| filename | string | No       | Display filename                 |
+
+#### Response
+```json
+{
+  "id": "crunchy-peanut-butter-sandwich",
+  "url": "https://your-pbnj.workers.dev/crunchy-peanut-butter-sandwich"
+}
+```
+
 ### Delete Paste
 
 DELETE /api/{id}
@@ -97,6 +130,24 @@ Requires authentication.
 ```bash
 curl -X DELETE https://your-pbnj.workers.dev/api/crunchy-peanut-butter-sandwich \
   -H "Authorization: Bearer YOUR_AUTH_KEY"
+```
+
+### Delete All Pastes
+
+DELETE /api
+
+Requires authentication. Deletes all pastes from the database.
+
+```bash
+curl -X DELETE https://your-pbnj.workers.dev/api \
+  -H "Authorization: Bearer YOUR_AUTH_KEY"
+```
+
+#### Response
+```json
+{
+  "message": "All pastes deleted"
+}
 ```
 
 ### View Paste (Web)

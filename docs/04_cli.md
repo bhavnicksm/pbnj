@@ -46,8 +46,10 @@ pbnj - < file.txt
 -f, --filename <name>    Set filename for the paste
 -p, --private            Create a private paste (not listed on homepage)
 -k, --key [key]          Require a key to view (auto-generates if no key given)
+-u, --update <id>        Update an existing paste by ID
 -l, --list               List recent pastes
 -d, --delete <id>        Delete a paste by ID
+-D, --delete-all         Delete all pastes
 -h, --help               Show help
 -v, --version            Show version
 
@@ -84,9 +86,19 @@ pbnj -p -k "mypassword" secret.txt
 pbnj -l
 ```
 
+### Update an existing paste
+```bash
+pbnj -u crunchy-peanut-butter-sandwich updated_file.py
+```
+
 ### Delete a paste
 ```bash
 pbnj -d crunchy-peanut-butter-sandwich
+```
+
+### Delete all pastes
+```bash
+pbnj -D
 ```
 
 ## Clipboard

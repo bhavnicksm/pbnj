@@ -19,6 +19,7 @@ That's it. You now have your own pastebin.
 ## Features
 
 - Syntax highlighting for 100+ languages
+- 12 beautiful themes built-in (Flexoki, GitHub, Nord, Gruvbox, Dracula, Catppuccin)
 - Clean, distraction-free interface
 - Memorable URLs (like crunchy-peanut-butter-sandwich)
 - CLI tool for terminal workflows
