@@ -1,0 +1,73 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Card from '@/components/ui/Card.astro';
+import CardContent from '@/components/ui/CardContent.astro';
+
+// Mock data for now - will be replaced with API call later
+const mockPastes = [
+	{
+		id: 'abc123',
+		language: 'python',
+		created: Date.now() - 1000 * 60 * 60 * 2, // 2 hours ago
+		preview: `def hello_world():\n    print("Hello, world!")\n    return True\n\nif __name__ == "__main__":\n    hello_world()`
+	},
+	{
+		id: 'def456',
+		language: 'javascript',
+		created: Date.now() - 1000 * 60 * 60 * 24, // 1 day ago
+		preview: `function fetchData(url) {\n  return fetch(url)\n    .then(res => res.json())\n    .catch(err => console.error(err));\n}`
+	},
+	{
+		id: 'ghi789',
+		language: 'typescript',
+		created: Date.now() - 1000 * 60 * 60 * 24 * 3, // 3 days ago
+		preview: `interface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nconst getUser = async (id: number): Promise<User> => {\n  const response = await fetch(\`/api/users/\${id}\`);\n  return response.json();\n}`
+	},
+	{
+		id: 'jkl012',
+		language: 'rust',
+		created: Date.now() - 1000 * 60 * 60 * 24 * 7, // 1 week ago
+		preview: `fn main() {\n    let numbers = vec![1, 2, 3, 4, 5];\n    let sum: i32 = numbers.iter().sum();\n    println!("Sum: {}", sum);\n}`
+	},
+	{
+		id: 'mno345',
+		language: 'go',
+		created: Date.now() - 1000 * 60 * 60 * 24 * 14, // 2 weeks ago
+		preview: `package main\n\nimport "fmt"\n\nfunc main() {\n    fmt.Println("Hello, World!")\n}`
+	},
+];
+
+function formatDate(timestamp: number): string {
+	const diff = Date.now() - timestamp;
+	const hours = Math.floor(diff / 3600000);
+	if (hours < 1) return 'Just now';
+	if (hours < 24) return `${hours} hours ago`;
+	const days = Math.floor(hours / 24);
+	if (days < 7) return `${days} day${days > 1 ? 's' : ''} ago`;
+	const weeks = Math.floor(days / 7);
+	return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+}
+---
+
+<Layout title="pbnj.sh">
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 pb-12">
+		{mockPastes.map((paste) => (
+			<a href={`/${paste.id}`} class="group block">
+				<Card class="h-64 flex flex-col transition-all duration-200 hover:border-paper-border-hover cursor-pointer">
+					<div class="flex-1 overflow-hidden p-5 relative">
+						<pre class="text-xs font-mono text-paper-text leading-relaxed overflow-hidden"><code>{paste.preview}</code></pre>
+						<div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-paper-card to-transparent pointer-events-none"></div>
+					</div>
+					<div class="border-t border-paper-border px-5 py-3 bg-paper-bg2">
+						<div class="text-sm font-medium text-paper-text mb-0.5">
+							{paste.id}.{paste.language}
+						</div>
+						<div class="text-xs text-paper-muted">
+							{formatDate(paste.created)}
+						</div>
+					</div>
+				</Card>
+			</a>
+		))}
+	</div>
+</Layout>
