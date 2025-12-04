@@ -10,6 +10,39 @@ function generateId(): string {
   return id;
 }
 
+// Detect language from filename extension
+function detectLanguage(filename: string): string {
+  const ext = filename.split('.').pop()?.toLowerCase();
+  const languageMap: Record<string, string> = {
+    'js': 'javascript',
+    'ts': 'typescript',
+    'py': 'python',
+    'rb': 'ruby',
+    'go': 'go',
+    'rs': 'rust',
+    'java': 'java',
+    'cpp': 'cpp',
+    'c': 'c',
+    'cs': 'csharp',
+    'php': 'php',
+    'sh': 'bash',
+    'bash': 'bash',
+    'zsh': 'bash',
+    'html': 'html',
+    'css': 'css',
+    'json': 'json',
+    'xml': 'xml',
+    'yaml': 'yaml',
+    'yml': 'yaml',
+    'md': 'markdown',
+    'sql': 'sql',
+    'swift': 'swift',
+    'kt': 'kotlin',
+    'scala': 'scala',
+  };
+  return languageMap[ext || ''] || 'txt';
+}
+
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     // Get runtime from Astro locals (Cloudflare binding)
@@ -26,9 +59,47 @@ export const POST: APIRoute = async ({ request, locals }) => {
       });
     }
 
-    // Parse request body
-    const body = await request.json();
-    const { code, language } = body;
+    let code: string;
+    let language: string | undefined;
+
+    // Check content type to determine how to parse the request
+    const contentType = request.headers.get('Content-Type') || '';
+
+    if (contentType.includes('multipart/form-data')) {
+      // Handle form data (file upload)
+      const formData = await request.formData();
+      const file = formData.get('file') as File;
+
+      if (!file) {
+        return new Response(JSON.stringify({ error: 'File is required' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+
+      // Read file content
+      code = await file.text();
+
+      // Detect language from filename or use provided language
+      const providedLanguage = formData.get('language') as string | null;
+      language = providedLanguage || detectLanguage(file.name);
+    } else if (contentType.includes('application/json')) {
+      // Handle JSON (original format)
+      const body = await request.json();
+      code = body.code;
+      language = body.language;
+
+      if (!code) {
+        return new Response(JSON.stringify({ error: 'Code is required' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+    } else {
+      // Handle plain text
+      code = await request.text();
+      language = 'txt';
+    }
 
     if (!code) {
       return new Response(JSON.stringify({ error: 'Code is required' }), {
