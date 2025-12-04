@@ -121,7 +121,7 @@ Usage:
   pbnj -                   Read from stdin
   cat file | pbnj          Pipe content
   pbnj -u <id> <file>      Update an existing paste
-  pbnj -l                  List recent pastes
+  pbnj -l [n]              List recent pastes (default: 10, or specify count)
   pbnj -d <id>             Delete a paste
   pbnj -D                  Delete all pastes
   pbnj --init              Configure your pbnj instance
@@ -132,7 +132,7 @@ Options:
   -p, --private            Create a private paste (not listed on homepage)
   -k, --key [key]          Require a key to view (auto-generates if no key given)
   -u, --update <id>        Update an existing paste by ID
-  -l, --list               List recent pastes
+  -l, --list [n]           List recent pastes (default: 10)
   -d, --delete <id>        Delete a paste by ID
   -D, --delete-all         Delete all pastes
   -h, --help               Show this help
@@ -328,7 +328,7 @@ async function updatePaste(id, code, language, filename, config) {
   }
 }
 
-async function listPastes(config) {
+async function listPastes(config, limit = 10) {
   const host = process.env.PBNJ_HOST || config.PBNJ_HOST;
 
   if (!host) {
@@ -352,13 +352,26 @@ async function listPastes(config) {
       return;
     }
 
-    console.log('');
-    for (const paste of pastes) {
+    const displayPastes = pastes.slice(0, limit);
+
+    // Calculate column widths
+    const idWidth = Math.max(2, ...displayPastes.map(p => p.id.length));
+    const langWidth = Math.max(4, ...displayPastes.map(p => p.language.length));
+    const ageWidth = 8;
+
+    // Print header
+    const idHeader = 'ID'.padEnd(idWidth);
+    const langHeader = 'LANG'.padEnd(langWidth);
+    const ageHeader = 'AGE'.padStart(ageWidth);
+    console.log(`${idHeader}  ${langHeader}  ${ageHeader}  NAME`);
+
+    for (const paste of displayPastes) {
       const name = paste.filename || `${paste.id}.${paste.language}`;
       const age = formatAge(paste.updated);
-      console.log(`  ${name}`);
-      console.log(`  ${host}/${paste.id}  (${age})`);
-      console.log('');
+      const id = paste.id.padEnd(idWidth);
+      const lang = paste.language.padEnd(langWidth);
+      const ageStr = age.padStart(ageWidth);
+      console.log(`${id}  ${lang}  ${ageStr}  ${name}`);
     }
   } catch (err) {
     console.error(`Error: ${err.message}`);
@@ -455,8 +468,15 @@ async function main() {
     }
 
     if (arg === '-l' || arg === '--list') {
+      // Check if next arg is a number (limit)
+      const nextArg = args[i + 1];
+      let limit = 10;
+      if (nextArg && /^\d+$/.test(nextArg)) {
+        limit = parseInt(nextArg, 10);
+        i++;
+      }
       const config = getConfig();
-      await listPastes(config);
+      await listPastes(config, limit);
       process.exit(0);
     }
 
