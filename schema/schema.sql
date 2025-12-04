@@ -5,9 +5,9 @@ CREATE TABLE IF NOT EXISTS pastes (
   id TEXT PRIMARY KEY,
   code TEXT NOT NULL,
   language TEXT,
-  created INTEGER NOT NULL,
+  updated INTEGER NOT NULL,
   expires INTEGER,
   filename TEXT
 );
 
-CREATE INDEX IF NOT EXISTS idx_created ON pastes(created DESC);
+CREATE INDEX IF NOT EXISTS idx_updated ON pastes(updated DESC);

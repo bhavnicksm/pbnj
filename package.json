@@ -1,12 +1,21 @@
 {
-  "name": "pbnj-temp",
+  "name": "pbnj",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "deploy": "npm run build && wrangler d1 execute DB --remote --file=schema/schema.sql && wrangler deploy"
+  },
+  "cloudflare": {
+    "bindings": {
+      "AUTH_KEY": {
+        "type": "secret",
+        "description": "Secret key for authenticating paste creation. Choose a secure random string."
+      }
+    }
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",

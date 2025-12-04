@@ -8,7 +8,7 @@ let pastes: any[] = [];
 
 try {
 	const { results } = await runtime.env.DB.prepare(
-		'SELECT id, language, created, filename, SUBSTR(code, 1, 200) as preview FROM pastes ORDER BY created DESC LIMIT 20'
+		'SELECT id, language, updated, filename, SUBSTR(code, 1, 200) as preview FROM pastes ORDER BY updated DESC LIMIT 20'
 	).all();
 
 	pastes = results || [];
@@ -59,7 +59,7 @@ function highlightPreview(code: string, language: string): string {
 							{paste.filename || `${paste.id}.${paste.language}`}
 						</div>
 						<div class="text-xs text-paper-muted leading-tight">
-							{formatDate(paste.created)}
+							{formatDate(paste.updated)}
 						</div>
 					</div>
 				</div>

@@ -100,7 +100,7 @@ export const GET: APIRoute = async ({ url, locals }) => {
     const limit = 20;
 
     const { results } = await runtime.env.DB.prepare(
-      'SELECT id, language, created, filename, SUBSTR(code, 1, 200) as preview FROM pastes ORDER BY created DESC LIMIT ? OFFSET ?'
+      'SELECT id, language, updated, filename, SUBSTR(code, 1, 200) as preview FROM pastes ORDER BY updated DESC LIMIT ? OFFSET ?'
     )
       .bind(limit, cursor)
       .all();
@@ -202,14 +202,14 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     for (let attempt = 0; attempt < maxAttempts; attempt++) {
       const id = generateId();
-      const created = Date.now();
+      const updated = Date.now();
       const lang = language || 'plaintext';
 
       try {
         await runtime.env.DB.prepare(
-          'INSERT INTO pastes (id, code, language, created, filename) VALUES (?, ?, ?, ?, ?)'
+          'INSERT INTO pastes (id, code, language, updated, filename) VALUES (?, ?, ?, ?, ?)'
         )
-          .bind(id, code, lang, created, filename || null)
+          .bind(id, code, lang, updated, filename || null)
           .run();
 
         // Success - return the response

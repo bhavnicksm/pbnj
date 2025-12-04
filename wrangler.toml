@@ -14,3 +14,17 @@ database_name = "pbnj-db"
 database_id = "e17c6a9a-14f3-4eb6-8282-293ef8ae8cb2"
 
 # Environment variables (set AUTH_KEY in Cloudflare dashboard or .dev.vars locally)
+
+# Observability
+[observability]
+enabled = false
+head_sampling_rate = 1
+
+[observability.logs]
+enabled = true
+head_sampling_rate = 1
+invocation_logs = true
+
+[observability.traces]
+enabled = false
+head_sampling_rate = 1
