@@ -1,6 +1,6 @@
 {
   "name": "@pbnjs/cli",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "CLI for pbnj.sh - A minimal pastebin for code snippets",
   "type": "module",
   "bin": {
