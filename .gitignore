@@ -23,3 +23,7 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 CLAUDE.md
+
+# Local dev files
+.wrangler/
+.dev.vars
