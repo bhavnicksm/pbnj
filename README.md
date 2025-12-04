@@ -20,22 +20,13 @@ _pbnj is a simple, minimal self-hosted pastebin solution, focused on getting you
 
 ## ✨ Features
 
-- 🎨 **Syntax highlighting** for 100+ languages
-- 🎭 **12 beautiful themes** — Flexoki, GitHub, Nord, Gruvbox, Dracula, Catppuccin & more
+- 🎨 **Syntax highlighting** for 100+ languages with 12 beautiful themes
 - 🧹 **Clean interface** — distraction-free, minimal design
 - 🥪 **Memorable URLs** — `crunchy-peanut-butter-sandwich` instead of `x7f9a2`
-- 📋 **Copy & download** — one-click actions for code
-- 🔗 **Social previews** — rich cards for Twitter, Discord, Slack
 - ⌨️ **CLI-first** — `pbnj file.py` and you're done
 - 🔒 **Private pastes** — unlisted pastes with optional secret keys
-- ✏️ **Update pastes** — edit existing pastes via CLI
-- 📝 **Single-file config** — one `pbnj.config.js` to customize everything
-- 🆔 **Flexible IDs** — choose between sandwich, short, or UUID styles
-- 📦 **File uploads** — drag & drop or pipe from terminal
-- 🌐 **Raw view** — `/r/{id}` for plain text access _for AI_
-- ☁️ **Edge-powered** — runs on Cloudflare's global network
-- 🏎️ **Fast** — loads in under 200ms worldwide with Cloudflare!
-- 💸 **Free forever** — Cloudflare's free tier is more than enough
+- ☁️ **Edge-powered** — fast globally, free forever on Cloudflare
+- ...and many more!
 
 <details>
 <summary>🎭 Theme Gallery</summary>
