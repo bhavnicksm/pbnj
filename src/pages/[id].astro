@@ -1,0 +1,63 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+const { id } = Astro.params;
+
+// Fetch paste from D1 database
+const runtime = Astro.locals.runtime as any;
+let paste: any = null;
+
+try {
+	const result = await runtime.env.DB.prepare(
+		'SELECT * FROM pastes WHERE id = ?'
+	).bind(id).first();
+
+	paste = result;
+
+	// Increment view count
+	if (paste) {
+		await runtime.env.DB.prepare(
+			'UPDATE pastes SET views = views + 1 WHERE id = ?'
+		).bind(id).run();
+	}
+} catch (error) {
+	console.error('Error fetching paste:', error);
+}
+
+if (!paste) {
+	return Astro.redirect('/');
+}
+---
+
+<Layout title={`${id} - pbnj.sh`}>
+	<div class="max-w-5xl mx-auto pb-12">
+		<div class="mb-6 flex items-center justify-between">
+			<div>
+				<h1 class="text-2xl font-medium text-paper-text mb-1">
+					{id}.{paste.language}
+				</h1>
+				<div class="text-sm text-paper-muted">
+					{paste.views} views
+				</div>
+			</div>
+			<div class="flex gap-3">
+				<a
+					href={`/${id}/raw`}
+					class="px-4 py-2 text-sm font-medium text-paper-text bg-paper-bg2 border border-paper-border rounded hover:border-paper-border-hover transition-colors"
+				>
+					Raw
+				</a>
+				<button
+					onclick="navigator.clipboard.writeText(document.querySelector('pre code').textContent); this.textContent = 'Copied!'; setTimeout(() => this.textContent = 'Copy', 2000)"
+					class="px-4 py-2 text-sm font-medium text-paper-text bg-paper-bg2 border border-paper-border rounded hover:border-paper-border-hover transition-colors"
+				>
+					Copy
+				</button>
+			</div>
+		</div>
+
+		<div class="border border-paper-border rounded-lg overflow-hidden">
+			<pre class="p-6 bg-paper-bg2 overflow-x-auto"><code class="text-sm font-mono text-paper-text leading-relaxed">{paste.code}</code></pre>
+		</div>
+	</div>
+</Layout>

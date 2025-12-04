@@ -40,12 +40,12 @@ function formatDate(timestamp: number): string {
 		)}
 		{pastes.map((paste) => (
 			<a href={`/${paste.id}`} class="group block">
-				<Card class="h-64 flex flex-col transition-all duration-200 hover:border-paper-border-hover cursor-pointer">
-					<div class="flex-1 overflow-hidden p-5 relative">
+				<Card class="h-64 flex flex-col transition-all duration-200 hover:shadow-paper cursor-pointer">
+					<div class="flex-1 overflow-hidden p-5 relative bg-paper-bg2">
 						<pre class="text-xs font-mono text-paper-text leading-relaxed overflow-hidden"><code>{paste.preview}</code></pre>
-						<div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-paper-card to-transparent pointer-events-none"></div>
+						<div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-paper-bg2 to-transparent pointer-events-none"></div>
 					</div>
-					<div class="border-t border-paper-border px-5 py-3 bg-paper-bg2">
+					<div class="border-t border-paper-border px-5 py-3 bg-paper-bg">
 						<div class="text-sm font-medium text-paper-text mb-0.5">
 							{paste.id}.{paste.language}
 						</div>
