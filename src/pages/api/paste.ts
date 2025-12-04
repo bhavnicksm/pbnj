@@ -1,36 +1,52 @@
 import type { APIRoute } from 'astro';
 
-// Generate human-readable ID using sandwich ingredients
+// Generate human-readable ID: adjective-ingredient-ingredient-ingredient-thing
 function generateId(): string {
+  const adjectives = [
+    'crunchy', 'smooth', 'chunky', 'creamy', 'toasted', 'grilled',
+    'fresh', 'wild', 'organic', 'natural', 'homemade', 'artisan',
+    'crispy', 'fluffy', 'golden', 'warm', 'sweet', 'savory',
+    'tangy', 'spicy', 'mild', 'bold', 'classic', 'fancy',
+    'simple', 'rustic', 'gourmet', 'premium', 'deluxe', 'perfect',
+  ];
+
   const ingredients = [
     // Spreads & proteins
     'peanut', 'butter', 'jelly', 'jam', 'honey', 'nutella', 'almond',
-    'cashew', 'hazelnut', 'tahini', 'hummus', 'avocado', 'cream',
+    'cashew', 'hazelnut', 'tahini', 'hummus', 'avocado', 'cream', 'cheese',
+    'ricotta', 'mayo', 'mustard', 'aioli', 'pesto', 'olive', 'tapenade',
 
-    // Breads
-    'wheat', 'white', 'rye', 'sourdough', 'multigrain', 'bagel',
-    'toast', 'roll', 'ciabatta', 'baguette', 'pita',
-
-    // Add-ons & flavors
+    // Fruits & veggies
     'banana', 'strawberry', 'grape', 'raspberry', 'apricot', 'blueberry',
-    'chocolate', 'vanilla', 'cinnamon', 'coconut', 'maple', 'caramel',
-    'marshmallow', 'pretzel', 'granola', 'flax', 'chia', 'sesame',
-    'poppy', 'oat', 'quinoa', 'spelt',
+    'apple', 'pear', 'peach', 'plum', 'cherry', 'mango', 'fig',
+    'tomato', 'cucumber', 'lettuce', 'spinach', 'arugula', 'kale',
 
-    // Textures & styles
-    'crunchy', 'smooth', 'chunky', 'creamy', 'toasted', 'grilled',
-    'fresh', 'wild', 'organic', 'natural', 'homemade', 'artisan'
+    // Nuts & seeds
+    'walnut', 'pecan', 'pistachio', 'sunflower', 'pumpkin',
+    'flax', 'chia', 'sesame', 'poppy', 'hemp',
+
+    // Flavors
+    'chocolate', 'vanilla', 'cinnamon', 'coconut', 'maple', 'caramel',
+    'marshmallow', 'pretzel', 'granola', 'oat', 'bacon', 'ham',
   ];
 
-  // Use crypto to randomly select 3 words
-  const bytes = new Uint8Array(3);
+  const things = [
+    'sandwich', 'burger', 'bun', 'wrap', 'bagel', 'roll',
+    'toast', 'melt', 'panini', 'hoagie', 'sub', 'hero',
+    'club', 'grinder', 'slider', 'pocket', 'pretzel', 'waffle',
+  ];
+
+  // Use crypto to randomly select words
+  const bytes = new Uint8Array(5);
   crypto.getRandomValues(bytes);
 
-  const word1 = ingredients[bytes[0] % ingredients.length];
-  const word2 = ingredients[bytes[1] % ingredients.length];
-  const word3 = ingredients[bytes[2] % ingredients.length];
+  const adjective = adjectives[bytes[0] % adjectives.length];
+  const ingredient1 = ingredients[bytes[1] % ingredients.length];
+  const ingredient2 = ingredients[bytes[2] % ingredients.length];
+  const ingredient3 = ingredients[bytes[3] % ingredients.length];
+  const thing = things[bytes[4] % things.length];
 
-  return `${word1}-${word2}-${word3}`;
+  return `${adjective}-${ingredient1}-${ingredient2}-${ingredient3}-${thing}`;
 }
 
 // Detect language from filename extension
