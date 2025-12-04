@@ -1,11 +1,14 @@
 import type { APIRoute } from 'astro';
 
-// Generate random 8-character ID
+// Generate cryptographically secure 16-character ID with pbnj_ prefix
 function generateId(): string {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
-  let id = '';
-  for (let i = 0; i < 8; i++) {
-    id += chars[Math.floor(Math.random() * chars.length)];
+  const bytes = new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+
+  let id = 'pbnj_';
+  for (let i = 0; i < 16; i++) {
+    id += chars[bytes[i] % chars.length];
   }
   return id;
 }
