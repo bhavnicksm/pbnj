@@ -40,11 +40,13 @@ const codePreview = paste.code.slice(0, 150).replace(/\n/g, ' ').trim() + (paste
 
 <Layout title={filename} description={codePreview}>
 	<div class="max-w-6xl mx-auto pb-12">
-		<div class="mb-3 flex items-center justify-between">
-			<h1 class="text-2xl font-medium text-paper-text">
+		<div class="mb-3 flex items-center justify-between gap-3">
+			<h1 class="text-xl sm:text-2xl font-medium text-paper-text truncate">
 				{paste.filename || `${id}.${paste.language}`}
 			</h1>
-			<div class="flex gap-3">
+
+			<!-- Desktop buttons -->
+			<div class="hidden sm:flex gap-3 flex-shrink-0">
 				<a
 					href={`/r/${id}`}
 					class="p-2 text-paper-text bg-paper-bg2 border border-paper-border rounded hover:border-paper-border-hover transition-colors"
@@ -92,6 +94,69 @@ const codePreview = paste.code.slice(0, 150).replace(/\n/g, ' ').trim() + (paste
 					</svg>
 				</button>
 			</div>
+
+			<!-- Mobile menu -->
+			<div class="relative sm:hidden flex-shrink-0">
+				<button
+					id="menu-btn"
+					class="p-2 text-paper-text bg-paper-bg2 border border-paper-border rounded hover:border-paper-border-hover transition-colors"
+					title="Actions"
+					aria-label="Open actions menu"
+				>
+					<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<circle cx="12" cy="12" r="1"></circle>
+						<circle cx="12" cy="5" r="1"></circle>
+						<circle cx="12" cy="19" r="1"></circle>
+					</svg>
+				</button>
+				<div id="menu-dropdown" class="hidden absolute right-0 top-full mt-1 bg-paper-bg border border-paper-border rounded shadow-lg z-50 min-w-[160px]">
+					<a
+						href={`/r/${id}`}
+						class="flex items-center gap-3 px-4 py-2 text-paper-text hover:bg-paper-bg2 transition-colors"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+							<polyline points="14 2 14 8 20 8"></polyline>
+							<line x1="16" y1="13" x2="8" y2="13"></line>
+							<line x1="16" y1="17" x2="8" y2="17"></line>
+							<polyline points="10 9 9 9 8 9"></polyline>
+						</svg>
+						Raw
+					</a>
+					<button
+						id="mobile-copy-link-btn"
+						class="flex items-center gap-3 px-4 py-2 text-paper-text hover:bg-paper-bg2 transition-colors w-full text-left"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+							<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+						</svg>
+						Copy Link
+					</button>
+					<button
+						id="mobile-copy-btn"
+						class="flex items-center gap-3 px-4 py-2 text-paper-text hover:bg-paper-bg2 transition-colors w-full text-left"
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+							<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+						</svg>
+						Copy Code
+					</button>
+					<button
+						id="mobile-download-btn"
+						class="flex items-center gap-3 px-4 py-2 text-paper-text hover:bg-paper-bg2 transition-colors w-full text-left"
+						data-filename={filename}
+					>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+							<polyline points="7 10 12 15 17 10"></polyline>
+							<line x1="12" y1="15" x2="12" y2="3"></line>
+						</svg>
+						Download
+					</button>
+				</div>
+			</div>
 		</div>
 
 		<div class="border border-paper-border rounded overflow-hidden code-block">
@@ -100,23 +165,55 @@ const codePreview = paste.code.slice(0, 150).replace(/\n/g, ' ').trim() + (paste
 	</div>
 
 	<script is:inline>
-		document.getElementById('copy-btn')?.addEventListener('click', () => {
+		// Mobile menu toggle
+		const menuBtn = document.getElementById('menu-btn');
+		const menuDropdown = document.getElementById('menu-dropdown');
+
+		menuBtn?.addEventListener('click', (e) => {
+			e.stopPropagation();
+			menuDropdown?.classList.toggle('hidden');
+		});
+
+		// Close menu when clicking outside
+		document.addEventListener('click', () => {
+			menuDropdown?.classList.add('hidden');
+		});
+
+		menuDropdown?.addEventListener('click', (e) => {
+			e.stopPropagation();
+		});
+
+		// Copy code (desktop + mobile)
+		function copyCode() {
 			const code = document.querySelector('pre code')?.textContent;
 			if (code) {
 				navigator.clipboard.writeText(code);
-				const btn = document.getElementById('copy-btn');
-				const icon = btn?.querySelector('svg');
-				if (icon) {
-					icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>';
-					setTimeout(() => {
-						icon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
-					}, 2000);
-				}
+			}
+			menuDropdown?.classList.add('hidden');
+		}
+
+		document.getElementById('copy-btn')?.addEventListener('click', () => {
+			copyCode();
+			const btn = document.getElementById('copy-btn');
+			const icon = btn?.querySelector('svg');
+			if (icon) {
+				icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>';
+				setTimeout(() => {
+					icon.innerHTML = '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>';
+				}, 2000);
 			}
 		});
 
-		document.getElementById('copy-link-btn')?.addEventListener('click', () => {
+		document.getElementById('mobile-copy-btn')?.addEventListener('click', copyCode);
+
+		// Copy link (desktop + mobile)
+		function copyLink() {
 			navigator.clipboard.writeText(window.location.href);
+			menuDropdown?.classList.add('hidden');
+		}
+
+		document.getElementById('copy-link-btn')?.addEventListener('click', () => {
+			copyLink();
 			const btn = document.getElementById('copy-link-btn');
 			const icon = btn?.querySelector('svg');
 			if (icon) {
@@ -127,9 +224,11 @@ const codePreview = paste.code.slice(0, 150).replace(/\n/g, ' ').trim() + (paste
 			}
 		});
 
-		document.getElementById('download-btn')?.addEventListener('click', () => {
+		document.getElementById('mobile-copy-link-btn')?.addEventListener('click', copyLink);
+
+		// Download (desktop + mobile)
+		function downloadFile(btn) {
 			const code = document.querySelector('pre code')?.textContent;
-			const btn = document.getElementById('download-btn');
 			const filename = btn?.dataset.filename || 'download.txt';
 			if (code) {
 				const blob = new Blob([code], { type: 'text/plain' });
@@ -140,6 +239,15 @@ const codePreview = paste.code.slice(0, 150).replace(/\n/g, ' ').trim() + (paste
 				a.click();
 				URL.revokeObjectURL(url);
 			}
+			menuDropdown?.classList.add('hidden');
+		}
+
+		document.getElementById('download-btn')?.addEventListener('click', function() {
+			downloadFile(this);
+		});
+
+		document.getElementById('mobile-download-btn')?.addEventListener('click', function() {
+			downloadFile(this);
 		});
 	</script>
 
