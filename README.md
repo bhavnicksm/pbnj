@@ -37,6 +37,26 @@ _pbnj is a simple, minimal self-hosted pastebin solution, focused on getting you
 - 🏎️ **Fast** — loads in under 200ms worldwide with Cloudflare!
 - 💸 **Free forever** — Cloudflare's free tier is more than enough
 
+<details>
+<summary>🎭 Theme Gallery</summary>
+
+| | |
+|:---:|:---:|
+| ![Flexoki Light](./assets/themes/flexoki-light.png) | ![Flexoki Dark](./assets/themes/flexoki-dark.png) |
+| Flexoki Light | Flexoki Dark |
+| ![GitHub Light](./assets/themes/github-light.png) | ![GitHub Dark](./assets/themes/github-dark.png) |
+| GitHub Light | GitHub Dark |
+| ![Gruvbox Light](./assets/themes/gruvbox-light.png) | ![Gruvbox Dark](./assets/themes/gruvbox-dark.png) |
+| Gruvbox Light | Gruvbox Dark |
+| ![Nord](./assets/themes/nord.png) | ![Dracula](./assets/themes/dracula.png) |
+| Nord | Dracula |
+| ![Catppuccin Latte](./assets/themes/catppuccin-latte.png) | ![Catppuccin Frappé](./assets/themes/catppuccin-frappe.png) |
+| Catppuccin Latte | Catppuccin Frappé |
+| ![Catppuccin Macchiato](./assets/themes/catppuccin-macchiato.png) | ![Catppuccin Mocha](./assets/themes/catppuccin-mocha.png) |
+| Catppuccin Macchiato | Catppuccin Mocha |
+
+</details>
+
 ## 🙋🏻‍♀️ Why?
 
 Another pastebin? Really?
