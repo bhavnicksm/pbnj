@@ -1,0 +1,62 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import config from '@/lib/config';
+---
+
+<Layout title={`Login - ${config.name}`}>
+	<div class="flex flex-col items-center" style="justify-content: center; width: 100%; min-height: calc(100vh - 180px);">
+		<img src="/lock.png" alt="Lock" style="width: 120px; height: auto; margin-bottom: 48px;" />
+		<div class="bg-paper-bg2 rounded-lg p-2 shadow-sm flex items-center gap-3" style="width: min(320px, calc(100% - 32px));">
+			<input
+				type="password"
+				id="auth-key"
+				class="flex-1 px-3 py-2 bg-paper-bg2 text-paper-text placeholder-paper-muted focus:outline-none focus:ring-0"
+				placeholder="enter your auth key"
+				autocomplete="off"
+			/>
+			<button
+				id="continue-btn"
+				class="w-12 h-10 bg-paper-bg2 text-paper-text rounded-md font-medium hover:opacity-80 transition-opacity flex items-center justify-center"
+			>
+				<span style="font-size: 28px;">›</span>
+			</button>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	const input = document.getElementById('auth-key') as HTMLInputElement;
+	const button = document.getElementById('continue-btn') as HTMLButtonElement;
+
+	// Check if already logged in
+	const existingKey = localStorage.getItem('pbnj_auth_key');
+	if (existingKey) {
+		window.location.href = '/new';
+	}
+
+	function saveAndRedirect() {
+		const key = input.value.trim();
+		if (key) {
+			localStorage.setItem('pbnj_auth_key', key);
+			window.location.href = '/new';
+		}
+	}
+
+	button.addEventListener('click', saveAndRedirect);
+
+	input.addEventListener('keydown', (e) => {
+		if (e.key === 'Enter') {
+			saveAndRedirect();
+		}
+	});
+
+	// Focus input on load
+	input.focus();
+</script>
+
+<style>
+	#auth-key:focus {
+		outline: none !important;
+		box-shadow: none !important;
+	}
+</style>
