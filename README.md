@@ -5,6 +5,8 @@
 # 🥪 pbnj 📄
 
 [![npm version](https://img.shields.io/npm/v/@pbnjs/cli?label=cli&color=cb3837)](https://www.npmjs.com/package/@pbnjs/cli)
+[![npm downloads](https://img.shields.io/npm/dm/@pbnjs/cli?color=cb3837)](https://www.npmjs.com/package/@pbnjs/cli)
+[![npm bundle size](https://img.shields.io/bundlephobia/minzip/@pbnjs/cli?label=size)](https://bundlephobia.com/package/@pbnjs/cli)
 [![GitHub stars](https://img.shields.io/github/stars/bhavnicksm/pbnj?style=flat&color=yellow)](https://github.com/bhavnicksm/pbnj/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/bhavnicksm/pbnj?style=flat&color=blue)](https://github.com/bhavnicksm/pbnj/network/members)
 [![Docs](https://img.shields.io/badge/docs-pbnj-green)](./docs)
