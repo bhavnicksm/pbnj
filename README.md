@@ -141,3 +141,15 @@ pbnj stands on the shoulders of giants. Shoutout to these awesome projects:
 - [Astro](https://astro.build) — The web framework that makes this possible
 
 And to everyone who's ever pasted code to share with a friend—you're the reason this exists.
+
+---
+
+<div align="center">
+
+If pbnj made your life a little easier, consider giving it a star ⭐
+
+It helps others discover the project and makes me mass smile :)
+
+[![Star on GitHub](https://img.shields.io/github/stars/bhavnicksm/pbnj?style=social)](https://github.com/bhavnicksm/pbnj)
+
+</div>
