@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS pastes (
   code TEXT NOT NULL,
   language TEXT,
   updated INTEGER NOT NULL,
-  expires INTEGER,
   filename TEXT,
   is_private INTEGER DEFAULT 0,
   secret_key TEXT
