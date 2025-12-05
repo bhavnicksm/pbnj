@@ -1,0 +1,187 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import config from '@/lib/config';
+---
+
+<Layout title={`New Paste - ${config.name}`}>
+	<div class="max-w-4xl mx-auto pt-6 pb-12">
+		<div class="bg-paper-bg2 rounded-lg overflow-hidden shadow-sm">
+			<!-- Code editor area -->
+			<div class="relative">
+				<textarea
+					id="code-input"
+					class="w-full h-96 p-4 bg-transparent text-paper-text font-mono text-sm resize-none focus:outline-none"
+					placeholder="paste your code here..."
+					spellcheck="false"
+				></textarea>
+			</div>
+
+			<!-- Options bar -->
+			<div class="border-t border-paper-border p-4">
+				<div class="flex flex-wrap gap-4 items-center">
+					<div class="flex-1 min-w-[200px]">
+						<label for="filename" class="block text-xs text-paper-muted mb-1">filename</label>
+						<input
+							type="text"
+							id="filename"
+							class="w-full px-3 py-1.5 bg-paper-bg border border-paper-border rounded text-sm text-paper-text placeholder-paper-muted focus:outline-none focus:ring-1 focus:ring-paper-text focus:ring-opacity-20"
+							placeholder="optional"
+						/>
+					</div>
+
+					<div class="w-32">
+						<label for="language" class="block text-xs text-paper-muted mb-1">language</label>
+						<select
+							id="language"
+							class="w-full px-3 py-1.5 bg-paper-bg border border-paper-border rounded text-sm text-paper-text focus:outline-none focus:ring-1 focus:ring-paper-text focus:ring-opacity-20"
+						>
+							<option value="">auto</option>
+							<option value="javascript">JavaScript</option>
+							<option value="typescript">TypeScript</option>
+							<option value="python">Python</option>
+							<option value="rust">Rust</option>
+							<option value="go">Go</option>
+							<option value="java">Java</option>
+							<option value="c">C</option>
+							<option value="cpp">C++</option>
+							<option value="csharp">C#</option>
+							<option value="ruby">Ruby</option>
+							<option value="php">PHP</option>
+							<option value="swift">Swift</option>
+							<option value="kotlin">Kotlin</option>
+							<option value="html">HTML</option>
+							<option value="css">CSS</option>
+							<option value="json">JSON</option>
+							<option value="yaml">YAML</option>
+							<option value="markdown">Markdown</option>
+							<option value="bash">Bash</option>
+							<option value="sql">SQL</option>
+							<option value="plaintext">Plain Text</option>
+						</select>
+					</div>
+
+					<div class="flex items-center gap-4">
+						<label class="flex items-center gap-2 text-sm text-paper-text cursor-pointer">
+							<input type="checkbox" id="private" class="w-4 h-4 accent-paper-text" />
+							<span>private</span>
+						</label>
+					</div>
+
+					<button
+						id="create-btn"
+						class="px-6 py-1.5 bg-paper-text text-paper-bg rounded font-medium text-sm hover:opacity-90 transition-opacity"
+					>
+						create paste
+					</button>
+				</div>
+
+				<!-- Error message -->
+				<div id="error-message" class="hidden mt-3 text-sm text-red-500"></div>
+			</div>
+		</div>
+
+		<!-- Logout link -->
+		<div class="mt-4 text-center">
+			<button id="logout-btn" class="text-xs text-paper-muted hover:text-paper-text transition-colors">
+				logout (clear auth key)
+			</button>
+		</div>
+	</div>
+</Layout>
+
+<script>
+	// Check if logged in
+	const authKey = localStorage.getItem('pbnj_auth_key');
+	if (!authKey) {
+		window.location.href = '/login';
+	}
+
+	const codeInput = document.getElementById('code-input') as HTMLTextAreaElement;
+	const filenameInput = document.getElementById('filename') as HTMLInputElement;
+	const languageSelect = document.getElementById('language') as HTMLSelectElement;
+	const privateCheckbox = document.getElementById('private') as HTMLInputElement;
+	const createBtn = document.getElementById('create-btn') as HTMLButtonElement;
+	const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
+	const errorMessage = document.getElementById('error-message') as HTMLDivElement;
+
+	function showError(msg: string) {
+		errorMessage.textContent = msg;
+		errorMessage.classList.remove('hidden');
+	}
+
+	function hideError() {
+		errorMessage.classList.add('hidden');
+	}
+
+	async function createPaste() {
+		hideError();
+
+		const code = codeInput.value;
+		if (!code.trim()) {
+			showError('Please enter some code');
+			return;
+		}
+
+		createBtn.disabled = true;
+		createBtn.textContent = 'creating...';
+
+		try {
+			const body: Record<string, any> = { code };
+
+			if (filenameInput.value.trim()) {
+				body.filename = filenameInput.value.trim();
+			}
+			if (languageSelect.value) {
+				body.language = languageSelect.value;
+			}
+			if (privateCheckbox.checked) {
+				body.private = true;
+			}
+
+			const response = await fetch('/api', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${authKey}`,
+				},
+				body: JSON.stringify(body),
+			});
+
+			if (!response.ok) {
+				const data = await response.json().catch(() => ({}));
+				throw new Error(data.error || 'Failed to create paste');
+			}
+
+			const data = await response.json();
+			window.location.href = `/${data.id}`;
+		} catch (err: any) {
+			showError(err.message || 'Something went wrong');
+			createBtn.disabled = false;
+			createBtn.textContent = 'create paste';
+		}
+	}
+
+	createBtn.addEventListener('click', createPaste);
+
+	// Ctrl/Cmd + Enter to submit
+	codeInput.addEventListener('keydown', (e) => {
+		if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+			createPaste();
+		}
+	});
+
+	// Logout
+	logoutBtn.addEventListener('click', () => {
+		localStorage.removeItem('pbnj_auth_key');
+		window.location.href = '/login';
+	});
+
+	// Focus textarea on load
+	codeInput.focus();
+</script>
+
+<style>
+	textarea::placeholder {
+		color: var(--paper-muted);
+	}
+</style>

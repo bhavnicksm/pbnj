@@ -6,7 +6,7 @@ import config from '@/lib/config';
 <Layout title={`Login - ${config.name}`}>
 	<div class="flex flex-col items-center" style="justify-content: center; width: 100%; min-height: calc(100vh - 180px);">
 		<img src="/lock.png" alt="Lock" style="width: 120px; height: auto; margin-bottom: 48px;" />
-		<div class="bg-paper-bg2 rounded-lg p-2 shadow-sm flex items-center gap-3" style="width: min(320px, calc(100% - 32px));">
+		<div id="auth-wrapper" class="bg-paper-bg2 rounded-lg p-2 shadow-sm flex items-center gap-3" style="width: min(320px, calc(100% - 32px)); border: 2px solid transparent; transition: border-color 0.3s ease;">
 			<input
 				type="password"
 				id="auth-key"
@@ -27,6 +27,7 @@ import config from '@/lib/config';
 <script>
 	const input = document.getElementById('auth-key') as HTMLInputElement;
 	const button = document.getElementById('continue-btn') as HTMLButtonElement;
+	const wrapper = document.getElementById('auth-wrapper') as HTMLDivElement;
 
 	// Check if already logged in
 	const existingKey = localStorage.getItem('pbnj_auth_key');
@@ -34,19 +35,58 @@ import config from '@/lib/config';
 		window.location.href = '/new';
 	}
 
-	function saveAndRedirect() {
+	function showError() {
+		// Add red border and shake
+		wrapper.style.borderColor = '#a63d40';
+		wrapper.classList.add('shake');
+
+		// Remove shake class after animation
+		setTimeout(() => {
+			wrapper.classList.remove('shake');
+		}, 500);
+
+		// Remove red border after 2 seconds
+		setTimeout(() => {
+			wrapper.style.borderColor = 'transparent';
+		}, 2000);
+	}
+
+	async function validateAndRedirect() {
 		const key = input.value.trim();
-		if (key) {
-			localStorage.setItem('pbnj_auth_key', key);
-			window.location.href = '/new';
+		if (!key) return;
+
+		button.style.opacity = '0.5';
+		button.style.pointerEvents = 'none';
+
+		try {
+			// Validate by making a test request to the API
+			const response = await fetch('/api/verify', {
+				method: 'POST',
+				headers: {
+					'Authorization': `Bearer ${key}`,
+				},
+			});
+
+			if (response.ok) {
+				localStorage.setItem('pbnj_auth_key', key);
+				window.location.href = '/new';
+			} else {
+				showError();
+				button.style.opacity = '1';
+				button.style.pointerEvents = 'auto';
+			}
+		} catch (err) {
+			showError();
+			button.style.opacity = '1';
+			button.style.pointerEvents = 'auto';
 		}
 	}
 
-	button.addEventListener('click', saveAndRedirect);
+	button.addEventListener('click', validateAndRedirect);
 
 	input.addEventListener('keydown', (e) => {
 		if (e.key === 'Enter') {
-			saveAndRedirect();
+			validateAndRedirect();
 		}
 	});
 
@@ -58,5 +98,15 @@ import config from '@/lib/config';
 	#auth-key:focus {
 		outline: none !important;
 		box-shadow: none !important;
+	}
+
+	@keyframes shake {
+		0%, 100% { transform: translateX(0); }
+		10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+		20%, 40%, 60%, 80% { transform: translateX(4px); }
+	}
+
+	.shake {
+		animation: shake 0.5s ease-in-out;
 	}
 </style>
