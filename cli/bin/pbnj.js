@@ -131,6 +131,7 @@ Options:
   -f, --filename <name>    Set filename for the paste
   -p, --private            Create a private paste (not listed on homepage)
   -k, --key [key]          Require a key to view (auto-generates if no key given)
+  -n, --no-copy            Don't copy URL to clipboard
   -u, --update <id>        Update an existing paste by ID
   -l, --list [n]           List recent pastes (default: 10)
   -d, --delete <id>        Delete a paste by ID
@@ -447,6 +448,7 @@ async function main() {
   let isPrivate = false;
   let secretKey = null;
   let updateId = null;
+  let noCopy = false;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -518,6 +520,11 @@ async function main() {
 
     if (arg === '-p' || arg === '--private') {
       isPrivate = true;
+      continue;
+    }
+
+    if (arg === '-n' || arg === '--no-copy') {
+      noCopy = true;
       continue;
     }
 
@@ -596,10 +603,12 @@ async function main() {
     }
   }
 
-  // Try to copy to clipboard
-  const copied = await copyToClipboard(url);
-  if (copied) {
-    console.log('📋 [copied to clipboard]');
+  // Try to copy to clipboard (unless --no-copy)
+  if (!noCopy) {
+    const copied = await copyToClipboard(url);
+    if (copied) {
+      console.log('📋 [copied to clipboard]');
+    }
   }
 }
 

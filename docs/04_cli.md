@@ -46,6 +46,7 @@ pbnj - < file.txt
 -f, --filename <name>    Set filename for the paste
 -p, --private            Create a private paste (not listed on homepage)
 -k, --key [key]          Require a key to view (auto-generates if no key given)
+-n, --no-copy            Don't copy URL to clipboard
 -u, --update <id>        Update an existing paste by ID
 -l, --list               List recent pastes
 -d, --delete <id>        Delete a paste by ID
@@ -103,7 +104,7 @@ pbnj -D
 
 ## Clipboard
 
-The URL is automatically copied to your clipboard after upload.
+The URL is automatically copied to your clipboard after upload. Use `-n` or `--no-copy` to disable this.
 
 Supported on:
 - macOS (pbcopy)
