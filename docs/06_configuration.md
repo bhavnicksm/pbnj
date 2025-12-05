@@ -10,8 +10,14 @@ export default {
   logo: '/logo.png',
   idStyle: 'sandwich',
   homepage: true,
+  sortOrder: 'newest',
   maxPasteSize: '1mb',
   theme: 'flexoki-light',
+  icons: {
+    login: '/peanut.png',
+    logout: '/jelly.png',
+    newPaste: '/bread.png',
+  },
 }
 ```
 
@@ -46,6 +52,17 @@ How paste IDs are generated:
 - **Default:** `true`
 
 When `true`, the homepage displays a grid of recent public pastes. Set to `false` for a minimal landing page without paste listings.
+
+### `sortOrder`
+- **Type:** `'newest' | 'oldest'`
+- **Default:** `'newest'`
+
+Controls the order of pastes on the homepage:
+
+| Value | Description |
+|-------|-------------|
+| `newest` | Most recently updated pastes appear first (default) |
+| `oldest` | Oldest pastes appear first |
 
 ### `maxPasteSize`
 - **Type:** `string`
@@ -83,6 +100,27 @@ Theme preset that controls syntax highlighting and UI colors. All themes use loc
 | `catppuccin-frappe` | Catppuccin mid-dark variant |
 | `catppuccin-macchiato` | Catppuccin darker variant |
 | `catppuccin-mocha` | Catppuccin darkest variant |
+
+### `icons`
+- **Type:** `{ login: string, logout: string, newPaste: string }`
+- **Default:** `{ login: '/peanut.png', logout: '/jelly.png', newPaste: '/bread.png' }`
+
+Custom icons for the authentication buttons in the header. Place your icons in the `public/` directory.
+
+| Property | Description |
+|----------|-------------|
+| `login` | Icon shown when logged out (click to login) |
+| `logout` | Icon shown when logged in (click to logout) |
+| `newPaste` | Icon for creating a new paste (only visible when logged in) |
+
+Example:
+```js
+icons: {
+  login: '/my-login-icon.png',
+  logout: '/my-logout-icon.png',
+  newPaste: '/my-new-icon.png',
+}
+```
 
 ### `footer`
 - **Type:** `{ text: string, link?: string }` or `undefined`
@@ -127,4 +165,4 @@ This creates a pastebin with:
 - Dracula dark theme
 
 ---
-pbnj - spread your code
+Next: 07_web_interface.md - Web interface guide

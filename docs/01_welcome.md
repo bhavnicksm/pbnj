@@ -23,6 +23,7 @@ That's it. You now have your own pastebin.
 - Clean, distraction-free interface
 - Memorable URLs (like crunchy-peanut-butter-sandwich)
 - CLI tool for terminal workflows
+- Web interface for creating and deleting pastes
 - Private pastes with optional secret keys
 - Download and copy buttons
 - Social media preview cards
@@ -35,6 +36,7 @@ That's it. You now have your own pastebin.
 - 04_cli.md           - CLI usage and options
 - 05_api.md           - HTTP API reference
 - 06_configuration.md - Configuration options
+- 07_web_interface.md - Web interface guide
 
 ## Links
 

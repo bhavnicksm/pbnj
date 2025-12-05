@@ -15,6 +15,9 @@ export default {
   // Show public paste listing on homepage
   homepage: true,
 
+  // Sort order for pastes on homepage: 'newest' | 'oldest'
+  sortOrder: "oldest",
+
   // Maximum paste size (e.g., '1mb', '500kb')
   maxPasteSize: "1mb",
 

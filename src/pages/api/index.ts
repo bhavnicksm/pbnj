@@ -74,9 +74,10 @@ export const GET: APIRoute = async ({ url, locals }) => {
 
     const cursor = parseInt(url.searchParams.get('cursor') || '0');
     const limit = 20;
+    const sortDirection = config.sortOrder === 'oldest' ? 'ASC' : 'DESC';
 
     const { results } = await runtime.env.DB.prepare(
-      'SELECT id, language, updated, filename, SUBSTR(code, 1, 200) as preview FROM pastes WHERE is_private = 0 OR is_private IS NULL ORDER BY updated DESC LIMIT ? OFFSET ?'
+      `SELECT id, language, updated, filename, SUBSTR(code, 1, 200) as preview FROM pastes WHERE is_private = 0 OR is_private IS NULL ORDER BY updated ${sortDirection} LIMIT ? OFFSET ?`
     )
       .bind(limit, cursor)
       .all();

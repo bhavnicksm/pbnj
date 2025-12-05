@@ -24,6 +24,7 @@ _pbnj is a simple, minimal self-hosted pastebin solution, focused on getting you
 - 🧹 **Clean interface** — distraction-free, minimal design
 - 🥪 **Memorable URLs** — `crunchy-peanut-butter-sandwich` instead of `x7f9a2`
 - ⌨️ **CLI-first** — `pbnj file.py` and you're done
+- 🌐 **Web interface** — create and delete pastes from the browser too
 - 🔒 **Private pastes** — unlisted pastes with optional secret keys
 - ☁️ **Edge-powered** — fast globally, free forever on Cloudflare
 - ...and many more!
@@ -119,14 +120,12 @@ See [cli/README.md](./cli/README.md) for full CLI documentation.
 
 pbnj is opinionated. These features are **not bugs**—they're deliberate choices to keep things simple:
 
-- **No web editor** — Use your terminal. That's the point.
 - **No git integration** — It's a pastebin, not a repository.
 - **No OAuth/accounts** — Single user, single auth key. Done.
 - **No multi-user support** — Fork it and run your own.
 - **No comments/discussions** — Share code, not conversations.
 - **No folders/organization** — The homepage is your feed.
 - **No expiring pastes** — Your pastes live forever (or until you delete them).
-- **No paste editing in browser** — Update via CLI with `pbnj -u <id>`.
 
 If you need these features, check out [Opengist](https://github.com/thomiceli/opengist) or [PrivateBin](https://github.com/PrivateBin/PrivateBin)—they're great projects that take a different approach.
 
