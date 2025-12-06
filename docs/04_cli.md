@@ -21,6 +21,13 @@ PBNJ_AUTH_KEY=your-secret-key
 
 You can also set these as environment variables.
 
+View your current configuration:
+```bash
+pbnj --show-config
+```
+
+This displays your host URL and auth key (masked for security).
+
 ## Usage
 
 ### Upload a file
@@ -48,11 +55,13 @@ pbnj - < file.txt
 -k, --key [key]          Require a key to view (auto-generates if no key given)
 -n, --no-copy            Don't copy URL to clipboard
 -u, --update <id>        Update an existing paste by ID
--l, --list               List recent pastes
+-l, --list [n]           List recent pastes (default: 10, or specify count)
 -d, --delete <id>        Delete a paste by ID
 -D, --delete-all         Delete all pastes
 -h, --help               Show help
 -v, --version            Show version
+--init                   Configure your pbnj instance
+--show-config            Show current configuration
 
 ## Examples
 
