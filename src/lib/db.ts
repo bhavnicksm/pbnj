@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { existsSync, mkdirSync, readFileSync } from 'fs';
+import { existsSync, mkdirSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -17,37 +17,9 @@ if (!existsSync(dataDir)) {
   mkdirSync(dataDir, { recursive: true });
 }
 
-// Create or open the database
+// Create or open the database (schema is initialized by init-db.mjs)
 const db = new Database(dbPath);
-
-// Enable WAL mode for better concurrent performance
 db.pragma('journal_mode = WAL');
-
-// Initialize the schema if needed
-function initSchema() {
-  const schemaPath = join(projectRoot, 'schema', 'schema.sql');
-  if (existsSync(schemaPath)) {
-    const schema = readFileSync(schemaPath, 'utf-8');
-    db.exec(schema);
-  } else {
-    // Fallback schema if file doesn't exist
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS pastes (
-        id TEXT PRIMARY KEY,
-        code TEXT NOT NULL,
-        language TEXT,
-        updated INTEGER NOT NULL,
-        filename TEXT,
-        is_private INTEGER DEFAULT 0,
-        secret_key TEXT
-      );
-      CREATE INDEX IF NOT EXISTS idx_updated ON pastes(updated DESC);
-    `);
-  }
-}
-
-// Initialize on first import
-initSchema();
 
 // D1-compatible database interface
 export interface DBResult<T> {
