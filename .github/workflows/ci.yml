@@ -7,7 +7,7 @@ on:
     branches: [main, master]
 
 jobs:
-  # Compute npm hash once and share with other jobs
+  # Regenerate lockfile with Nix's npm and compute hash
   prepare:
     runs-on: ubuntu-latest
     outputs:
@@ -21,6 +21,14 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - name: Regenerate package-lock.json with Nix npm
+        run: |
+          # Use Nix's npm to regenerate lockfile for compatibility
+          rm -rf node_modules package-lock.json
+          nix develop .#ci --command npm install --package-lock-only
+          echo "Lockfile regenerated with Nix npm version:"
+          nix develop .#ci --command npm --version
+
       - name: Compute npm dependencies hash
         id: hash
         run: |
@@ -28,12 +36,23 @@ jobs:
           echo "hash=$HASH" >> $GITHUB_OUTPUT
           echo "Computed npm deps hash: $HASH"
 
+      - name: Upload regenerated lockfile
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock
+          path: package-lock.json
+          retention-days: 1
+
   # Build and verify the application
   build:
     runs-on: ubuntu-latest
     needs: prepare
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: package-lock
 
       - uses: cachix/install-nix-action@v27
         with:
@@ -49,6 +68,7 @@ jobs:
       - name: Update flake with npm hash
         run: |
           sed -i 's|npmDepsHash = "sha256-[^"]*";|npmDepsHash = "${{ needs.prepare.outputs.npm-hash }}";|' flake.nix
+          cat flake.nix | grep npmDepsHash
 
       - name: Build application
         run: nix build --print-build-logs
@@ -67,6 +87,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: package-lock
+
       - uses: cachix/install-nix-action@v27
         with:
           nix_path: nixpkgs=channel:nixos-24.05
@@ -81,6 +105,7 @@ jobs:
       - name: Update flake with npm hash
         run: |
           sed -i 's|npmDepsHash = "sha256-[^"]*";|npmDepsHash = "${{ needs.prepare.outputs.npm-hash }}";|' flake.nix
+          cat flake.nix | grep npmDepsHash
 
       - name: Build container image
         run: nix build .#container --print-build-logs

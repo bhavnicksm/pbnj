@@ -23,6 +23,9 @@
 
           inherit npmDepsHash nodejs;
 
+          # Allow npm to write to cache for packages not in prefetched deps
+          makeCacheWritable = true;
+
           # Build dependencies for native modules (better-sqlite3)
           nativeBuildInputs = with pkgs; [
             python3
