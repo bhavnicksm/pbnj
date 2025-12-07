@@ -27,3 +27,13 @@ CLAUDE.md
 # Local dev files
 .wrangler/
 .dev.vars
+
+# SQLite database
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Nix build output
+result
+result-*

@@ -1,16 +1,15 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
-import cloudflare from '@astrojs/cloudflare';
+import node from '@astrojs/node';
 
-// https://astro.build/config
+// Node.js standalone server configuration
+// Build with: npm run build
+// Run with: npm run start
 export default defineConfig({
   output: 'server',
-  adapter: cloudflare({
-    platformProxy: {
-      enabled: true,
-    },
-    imageService: 'passthrough',
+  adapter: node({
+    mode: 'standalone',
   }),
   integrations: [tailwind()],
   security: {
